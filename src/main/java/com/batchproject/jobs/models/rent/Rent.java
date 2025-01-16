@@ -29,8 +29,6 @@ public class Rent extends BaseEntity {
     @ManyToOne
     private TenantProfile tenantProfile;
 
-    @JoinColumn(name = "suite_id")
-    @ManyToOne
-    @JsonIgnore
-    private Suite suite;
+    @Column(name = "suite_id")
+    private Long suiteId;
 }

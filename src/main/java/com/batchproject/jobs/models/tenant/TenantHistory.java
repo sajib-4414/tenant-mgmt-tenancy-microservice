@@ -1,7 +1,6 @@
 package com.batchproject.jobs.models.tenant;
 
 import com.batchproject.jobs.models.BaseEntity;
-import com.batchproject.jobs.models.housing.HousingBuilding;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +22,7 @@ public class TenantHistory extends BaseEntity {
     private LocalDate endDate; //no end date means its current
     @Column(name = "is_current_tenant")
     private Boolean isCurrentTenant; //also yes means currently renting
-    @JoinColumn(name = "housing_building_stayed")
-    @ManyToOne
-    private HousingBuilding buildingStayed;
+
+    @Column(name = "housing_building_stayed")
+    private Long housingBuildingStayedId;
 }

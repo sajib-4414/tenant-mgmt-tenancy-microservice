@@ -1,7 +1,6 @@
 package com.batchproject.jobs.models.tenant;
 
 import com.batchproject.jobs.models.BaseEntity;
-import com.batchproject.jobs.models.housing.Suite;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,10 +17,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "tenancy")
 public class Tenancy extends BaseEntity {
-    @JoinColumn(name = "suite_id")
-    @ManyToOne
-    @JsonIgnore
-    private Suite suite;
+    @Column(name = "suite_id")
+    private Long suiteId;
 
     @JoinColumn(name = "tenant_profile_id")
     @ManyToOne

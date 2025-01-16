@@ -1,8 +1,6 @@
 package com.batchproject.jobs.models.rent;
 
 import com.batchproject.jobs.models.BaseEntity;
-import com.batchproject.jobs.models.housing.Suite;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +26,7 @@ public class RentPrice extends BaseEntity {
     @Column(name = "rent_amount")
     private Double rentAmt;
 
-    @JoinColumn(name = "suite_id")
-    @ManyToOne
-    @JsonIgnore
-    private Suite suite;
+
+    @Column(name = "suite_id")
+    private Long suiteId;
 }

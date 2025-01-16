@@ -19,13 +19,14 @@ import java.util.concurrent.CompletableFuture;
 public class RentPriceService {
 
     private final RentPriceRepository rentPriceRepository;
-    private final SuiteRepository suiteRepository;
+
 
     @Async
     @Transactional
     public CompletableFuture<RentPrice> setNewRent(RentPriceDTO payload) {
-        Suite suite = suiteRepository.findById(payload.getSuiteId())
-                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + payload.getSuiteId()));
+//        Suite suite = suiteRepository.findById(payload.getSuiteId())
+//                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + payload.getSuiteId()));
+        //we cannot verify anymore, but as this will come from the main project, we can assume its verified suite id.
 
         RentPrice rentPrice = RentPrice.builder()
                 .rentAmt(payload.getRentAmt())
