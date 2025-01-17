@@ -2,8 +2,6 @@ package com.batchproject.jobs.models.rent;
 
 import com.batchproject.jobs.models.BaseEntity;
 import com.batchproject.jobs.models.tenant.TenantProfile;
-import com.batchproject.jobs.models.housing.Suite;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;

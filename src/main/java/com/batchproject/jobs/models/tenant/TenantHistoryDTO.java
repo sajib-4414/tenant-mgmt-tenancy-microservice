@@ -1,6 +1,6 @@
 package com.batchproject.jobs.models.tenant;
 
-import com.batchproject.jobs.models.housing.HousingBuilding;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

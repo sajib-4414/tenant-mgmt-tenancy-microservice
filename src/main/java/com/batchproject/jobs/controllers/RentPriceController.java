@@ -2,6 +2,7 @@ package com.batchproject.jobs.controllers;
 
 import com.batchproject.jobs.models.rent.RentPrice;
 import com.batchproject.jobs.models.rent.RentPriceDTO;
+import com.batchproject.jobs.services.RentPriceService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

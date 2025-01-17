@@ -23,6 +23,6 @@ public class TenantHistory extends BaseEntity {
     @Column(name = "is_current_tenant")
     private Boolean isCurrentTenant; //also yes means currently renting
 
-    @Column(name = "housing_building_stayed")
+    @Column(name = "suite_stayed")
     private Long housingBuildingStayedId;
 }

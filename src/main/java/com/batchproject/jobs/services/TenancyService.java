@@ -1,8 +1,6 @@
 package com.batchproject.jobs.services;
 
 import com.batchproject.jobs.configs.exceptions.customexceptions.BadDataException;
-import com.batchproject.jobs.models.housing.Suite;
-import com.batchproject.jobs.models.housing.SuiteRepository;
 import com.batchproject.jobs.models.rent.RentPrice;
 import com.batchproject.jobs.models.rent.RentPriceRepository;
 import com.batchproject.jobs.models.tenant.*;
@@ -21,7 +19,6 @@ import java.util.concurrent.CompletableFuture;
 public class TenancyService {
 
     private final TenancyRepository tenancyRepository;
-    private final SuiteRepository suiteRepository;
     private final TenantProfileRepository tenantProfileRepository;
     private final RentPriceRepository rentPriceRepository;
 
@@ -37,8 +34,9 @@ public class TenancyService {
 
     @Async
     public CompletableFuture<Tenancy> createTenancy(TenancyDTO tenancyDTO) {
-        Suite suite = suiteRepository.findById(tenancyDTO.getSuiteId())
-                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + tenancyDTO.getSuiteId()));
+        //due to moving to microservice, we are right now not able to check if the suiteid is valid.
+//        Suite suite = suiteRepository.findById(tenancyDTO.getSuiteId())
+//                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + tenancyDTO.getSuiteId()));
         TenantProfile tenantProfile = tenantProfileRepository.findById(tenancyDTO.getTenantProfileId())
                 .orElseThrow(() -> new EntityNotFoundException("TenantProfile not found with id: " + tenancyDTO.getTenantProfileId()));
 
@@ -46,7 +44,7 @@ public class TenancyService {
         if(tenancyDTO.getStartDate().isBefore(today))
             throw new BadDataException("invalid start date, should be at least today");
         Tenancy tenancy = new Tenancy();
-        tenancy.setSuite(suite);
+        tenancy.setSuiteId(tenancyDTO.getSuiteId());
         tenancy.setTenantProfile(tenantProfile);
         tenancy.setStartDate(tenancyDTO.getStartDate());
         tenancy.setEndDate(tenancyDTO.getEndDate());
@@ -70,7 +68,7 @@ public class TenancyService {
     @Async
     public CompletableFuture<List<Tenancy>> getTenancyHistoryBySuite(Long suiteId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "startDate");
-        var tenancyList = tenancyRepository.findAllBySuite_Id(suiteId, sort);
+        var tenancyList = tenancyRepository.findAllBysuiteId(suiteId, sort);
         return CompletableFuture.completedFuture(
                 tenancyList);
 
@@ -81,12 +79,13 @@ public class TenancyService {
         Tenancy existingTenancy = tenancyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Tenancy not found with id: " + id));
 
-        Suite suite = suiteRepository.findById(tenancyDTO.getSuiteId())
-                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + tenancyDTO.getSuiteId()));
+        //due to moving to microservice, we are right now not able to check if the suiteid is valid.
+//        Suite suite = suiteRepository.findById(tenancyDTO.getSuiteId())
+//                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + tenancyDTO.getSuiteId()));
         TenantProfile tenantProfile = tenantProfileRepository.findById(tenancyDTO.getTenantProfileId())
                 .orElseThrow(() -> new EntityNotFoundException("TenantProfile not found with id: " + tenancyDTO.getTenantProfileId()));
 
-        existingTenancy.setSuite(suite);
+        existingTenancy.setSuiteId(tenancyDTO.getSuiteId());
         existingTenancy.setTenantProfile(tenantProfile);
         existingTenancy.setStartDate(tenancyDTO.getStartDate());
         existingTenancy.setEndDate(tenancyDTO.getEndDate());

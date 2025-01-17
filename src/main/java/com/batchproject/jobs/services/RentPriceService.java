@@ -1,7 +1,5 @@
 package com.batchproject.jobs.services;
 
-import com.batchproject.jobs.models.housing.Suite;
-import com.batchproject.jobs.models.housing.SuiteRepository;
 import com.batchproject.jobs.models.rent.RentPrice;
 import com.batchproject.jobs.models.rent.RentPriceDTO;
 import com.batchproject.jobs.models.rent.RentPriceRepository;
@@ -32,7 +30,7 @@ public class RentPriceService {
                 .rentAmt(payload.getRentAmt())
                 .effectiveStartDate(payload.getEffectiveStartDate())
                 .effectiveEndDate(payload.getEffectiveEndDate())
-                .suite(suite)
+                .suiteId(payload.getSuiteId())
                 .build();
         return CompletableFuture.completedFuture(rentPriceRepository.save(rentPrice));
     }
@@ -40,7 +38,7 @@ public class RentPriceService {
     @Async
     public CompletableFuture<List<RentPrice>> getAllRentPricesBySuite(Long suiteId) {
         return CompletableFuture.completedFuture(
-                rentPriceRepository.findAllBySuite_Id(suiteId)
+                rentPriceRepository.findAllBysuiteId(suiteId)
         );
     }
 
@@ -51,12 +49,14 @@ public class RentPriceService {
                 .orElseThrow(() -> new EntityNotFoundException("RentPrice not found with id: " + id));
 
         existingRentPrice.setRentAmt(rentPriceDTO.getRentAmt());
-        Suite suite = suiteRepository.findById(rentPriceDTO.getSuiteId())
-                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + rentPriceDTO.getSuiteId()));
+//        Suite suite = suiteRepository.findById(payload.getSuiteId())
+//                .orElseThrow(() -> new EntityNotFoundException("Suite not found with id: " + payload.getSuiteId()));
+        //we cannot verify anymore, but as this will come from the main project, we can assume its verified suite id.
+
 
         existingRentPrice.setEffectiveStartDate(rentPriceDTO.getEffectiveStartDate());
         existingRentPrice.setEffectiveEndDate(rentPriceDTO.getEffectiveEndDate());
-        existingRentPrice.setSuite(suite);
+        existingRentPrice.setSuiteId(rentPriceDTO.getSuiteId());
 
         return CompletableFuture.completedFuture(rentPriceRepository.save(existingRentPrice));
     }

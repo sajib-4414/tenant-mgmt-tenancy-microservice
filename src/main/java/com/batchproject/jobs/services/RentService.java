@@ -1,7 +1,6 @@
 package com.batchproject.jobs.services;
 
-import com.batchproject.jobs.models.housing.Suite;
-import com.batchproject.jobs.models.housing.SuiteRepository;
+
 import com.batchproject.jobs.models.rent.Rent;
 import com.batchproject.jobs.models.rent.RentDTO;
 import com.batchproject.jobs.models.rent.RentRepository;
@@ -21,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 public class RentService {
     private final RentRepository rentRepository;
     private final TenantProfileRepository tenantProfileRepository;
-    private final SuiteRepository suiteRepository;
+
 
     @Async
     public CompletableFuture<List<Rent>> getAllRents() {
@@ -33,9 +32,9 @@ public class RentService {
     @Async
     public CompletableFuture<Rent> createRent(RentDTO rentDTO) {
         Optional<TenantProfile> tenantProfileOpt = tenantProfileRepository.findById(rentDTO.getTenantProfileId());
-        Optional<Suite> suiteOpt = suiteRepository.findById(rentDTO.getSuiteId());
 
-        if (!tenantProfileOpt.isPresent() || !suiteOpt.isPresent()) {
+
+        if (!tenantProfileOpt.isPresent() || rentDTO.getSuiteId()==null) {
             throw new RuntimeException("TenantProfile or Suite not found");
         }
 
@@ -45,7 +44,7 @@ public class RentService {
                 .paidDate(rentDTO.getPaidDate())
                 .status(rentDTO.getStatus())
                 .tenantProfile(tenantProfileOpt.orElseThrow(()->new RuntimeException("Tenant profile not found")))
-                .suite(suiteOpt.orElseThrow(()-> new RuntimeException("suite not found")))
+                .suiteId(rentDTO.getSuiteId())
                 .build();
 
         Rent savedRent = rentRepository.save(rent);
@@ -63,9 +62,11 @@ public class RentService {
 
         Rent rent = rentOpt.get();
         Optional<TenantProfile> tenantProfileOpt = tenantProfileRepository.findById(rentDTO.getTenantProfileId());
-        Optional<Suite> suiteOpt = suiteRepository.findById(rentDTO.getSuiteId());
+//        Optional<Suite> suiteOpt = suiteRepository.findById(rentDTO.getSuiteId());
+        //in this microservie we dont have access to suite
 
-        if (!tenantProfileOpt.isPresent() || !suiteOpt.isPresent()) {
+        //we could call the main microservice syncrhonously in future to validate
+        if (!tenantProfileOpt.isPresent() || rentDTO.getSuiteId()==null) {
             throw new RuntimeException("TenantProfile or Suite not found");
         }
 
@@ -74,7 +75,7 @@ public class RentService {
         rent.setPaidDate(rentDTO.getPaidDate());
         rent.setStatus(rentDTO.getStatus());
         rent.setTenantProfile(tenantProfileOpt.get());
-        rent.setSuite(suiteOpt.get());
+        rent.setSuiteId(rentDTO.getSuiteId());
 
         Rent updatedRent = rentRepository.save(rent);
 
