@@ -1,5 +1,7 @@
 package com.batchproject.jobs.services;
 
+import com.batchproject.jobs.configs.exceptions.customexceptions.BadDataException;
+import com.batchproject.jobs.configs.exceptions.customexceptions.UnprocessableEntityException;
 import com.batchproject.jobs.models.rent.RentPrice;
 import com.batchproject.jobs.models.rent.RentPriceDTO;
 import com.batchproject.jobs.models.rent.RentPriceRepository;
@@ -70,6 +72,9 @@ public class RentPriceService {
 
     public CompletableFuture<RentPrice> fetchLatestRentOfSuite(Long suiteId) {
         RentPrice rentPrice = rentPriceRepository.getLatestRentPrice(suiteId);
+        System.out.println("rent ricre was "+rentPrice);
+        if (rentPrice == null)
+            throw new UnprocessableEntityException("No rent price found for the suite");
         return CompletableFuture.completedFuture(rentPrice);
 
     }

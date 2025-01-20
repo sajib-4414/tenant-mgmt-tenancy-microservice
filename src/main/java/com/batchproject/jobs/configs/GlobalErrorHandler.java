@@ -2,10 +2,7 @@ package com.batchproject.jobs.configs;
 
 import com.batchproject.jobs.configs.exceptions.ErrorDTO;
 import com.batchproject.jobs.configs.exceptions.ErrorHttpResponse;
-import com.batchproject.jobs.configs.exceptions.customexceptions.BadDataException;
-import com.batchproject.jobs.configs.exceptions.customexceptions.ItemNotFoundException;
-import com.batchproject.jobs.configs.exceptions.customexceptions.PermissionError;
-import com.batchproject.jobs.configs.exceptions.customexceptions.SystemException;
+import com.batchproject.jobs.configs.exceptions.customexceptions.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -146,6 +143,16 @@ public class GlobalErrorHandler {
                 .errors(Collections.singletonList(error))
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(UnprocessableEntityException.class)
+    public ResponseEntity<ErrorHttpResponse> handleUnprocessableDataError(UnprocessableEntityException ex) {
+        ErrorDTO error = ErrorDTO.builder().code(ex.getCode()).message(ex.getMessage()).build();
+        ErrorHttpResponse errorResponse = ErrorHttpResponse
+                .builder()
+                .errors(Collections.singletonList(error))
+                .build();
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errorResponse);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
