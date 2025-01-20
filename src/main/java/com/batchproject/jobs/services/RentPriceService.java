@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 @Service
 @AllArgsConstructor
@@ -65,5 +66,11 @@ public class RentPriceService {
     public CompletableFuture<Void> deleteRentPrice(Long id) {
         rentPriceRepository.deleteById(id);
         return CompletableFuture.completedFuture(null);
+    }
+
+    public CompletableFuture<RentPrice> fetchLatestRentOfSuite(Long suiteId) {
+        RentPrice rentPrice = rentPriceRepository.getLatestRentPrice(suiteId);
+        return CompletableFuture.completedFuture(rentPrice);
+
     }
 }

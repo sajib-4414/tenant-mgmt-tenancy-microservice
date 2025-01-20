@@ -24,9 +24,15 @@ public class RentPriceController {
                 .thenApply(ResponseEntity::ok);
     }
 
-    @GetMapping
+    @GetMapping("/rent-history-by-suite/{suiteId}")
     public CompletableFuture<ResponseEntity<List<RentPrice>>> getAllRentPricesBySuite(@PathVariable Long suiteId) {
         return rentPriceService.getAllRentPricesBySuite(suiteId)
+                .thenApply(ResponseEntity::ok);
+    }
+
+    @GetMapping("/get-latest-rent-price/{suiteId}")
+    public CompletableFuture<ResponseEntity<RentPrice>> getLatestRentPriceBySuite(@PathVariable Long suiteId) {
+        return rentPriceService.fetchLatestRentOfSuite(suiteId)
                 .thenApply(ResponseEntity::ok);
     }
 
