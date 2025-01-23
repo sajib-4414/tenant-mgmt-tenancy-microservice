@@ -1,10 +1,8 @@
 package com.batchproject.jobs.models.tenant;
 
 import com.batchproject.jobs.models.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -15,7 +13,15 @@ import lombok.Data;
                 @Index(name = "idx_keycloak_user_id_tenant_profile", columnList = "keycloak_user_id")
         }
 )
+@AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "id", unique = true, nullable = false))
+})
 public class TenantProfile extends BaseEntity {
+
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tenant_profile_id_seq")
+    @SequenceGenerator(name = "tenant_profile_id_seq", sequenceName = "tenant_profile_id_seq", allocationSize = 1)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Long id;
 
     @Column(name = "keycloak_user_id", unique = true, nullable = false)
     private String keycloakUserId; // This will link to the Keycloak user's ID
