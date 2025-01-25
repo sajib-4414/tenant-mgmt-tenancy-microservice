@@ -16,18 +16,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@AttributeOverrides({
-        @AttributeOverride(name = "id", column = @Column(name = "id", unique = true, nullable = false))
-})
+
 @Table(name = "tenancy")
 public class Tenancy extends BaseEntity {
-
-
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tenancy_id_seq")
-    @SequenceGenerator(name = "tenancy_id_seq", sequenceName = "tenancy_id_seq", allocationSize = 1)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
-
 
     @Column(name = "suite_id")
     private Long suiteId;

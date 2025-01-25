@@ -1,9 +1,5 @@
---
--- Name: rent; Type: TABLE; Schema: public; Owner: -
---
-
 CREATE TABLE public.rent (
-    id bigint NOT NULL,
+    id BIGSERIAL NOT NULL PRIMARY KEY,
     amount integer NOT NULL,
     due_date date NOT NULL,
     paid_date date,
@@ -15,22 +11,3 @@ CREATE TABLE public.rent (
     created_by character varying(255),
     updated_by character varying(255)
 );
-
-
--- --
--- -- Name: rent_id_seq; Type: SEQUENCE; Schema: public; Owner: -
--- --
-
-CREATE SEQUENCE public.rent_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-
--- Name: rent_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
-
-
-ALTER SEQUENCE public.rent_id_seq OWNED BY public.rent.id;

@@ -13,19 +13,13 @@ import java.time.LocalDate;
 @Data
 @Builder
 @Entity
-@AttributeOverrides({
-        @AttributeOverride(name = "id", column = @Column(name = "id", unique = true, nullable = false))
-})
+
 @Table(name = "rent_price")
 @AllArgsConstructor
 @NoArgsConstructor
 public class RentPrice extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rent_price_id_seq")
-    @SequenceGenerator(name = "rent_price_id_seq", sequenceName = "rent_price_id_seq", allocationSize = 1)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+
 
 
     @Column(name = "effective_start_date")

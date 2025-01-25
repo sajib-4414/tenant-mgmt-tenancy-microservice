@@ -35,8 +35,9 @@ public class RentPriceService {
                 .effectiveEndDate(payload.getEffectiveEndDate())
                 .suiteId(payload.getSuiteId())
                 .build();
-        rentPriceRepository.save(rentPrice);
-        return CompletableFuture.completedFuture(rentPrice);
+        RentPrice savedRentPrice = rentPriceRepository.save(rentPrice);
+
+        return CompletableFuture.completedFuture(savedRentPrice);
     }
 
     @Async
