@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.batchproject</groupId>
-	<artifactId>jobs</artifactId>
+	<artifactId>jobs-rent-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jobs</name>
 	<description>Spring boot batch jobs usecases</description>
