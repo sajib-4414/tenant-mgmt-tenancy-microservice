@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class MyScheduledTask {
     private JobExecutionRepository jobExecutionRepository;
 
-    @Scheduled(fixedRate = 5000, initialDelay = 2000)
+//    @Scheduled(fixedRate = 5000, initialDelay = 2000)
     public void runTask(){
         //first note it in the job execution repository
 
@@ -31,4 +31,7 @@ public class MyScheduledTask {
                 .build();
         jobExecutionRepository.save(log);
     }
+
+
+
 }

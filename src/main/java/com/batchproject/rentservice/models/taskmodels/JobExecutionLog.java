@@ -2,12 +2,18 @@ package com.batchproject.rentservice.models.taskmodels;
 
 import com.batchproject.rentservice.models.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "job_execution_log")
 public class JobExecutionLog extends BaseEntity {
     @Column(name = "job_name")
