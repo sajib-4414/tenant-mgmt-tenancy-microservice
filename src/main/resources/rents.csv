@@ -1,0 +1,4 @@
+amount,due_date,paid_date,status,tenant_profile_id,suite_id
+1200,2025-03-01,2025-03-05,PAID,1,101
+1500,2025-04-01,,DUE,2,102
+1000,2025-05-01,2025-05-03,PAID,3,103

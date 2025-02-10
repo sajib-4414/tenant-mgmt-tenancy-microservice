@@ -1,4 +1,9 @@
 spring:
+  batch:
+    jdbc:
+      initialize-schema: never #make it always for the first time to have the tables created
+    job:
+      enabled: false #means spring will not attempt to run all batch jobs, batch jobs will only run when u trigger it
   config:
     import: secret.yml
   datasource:
