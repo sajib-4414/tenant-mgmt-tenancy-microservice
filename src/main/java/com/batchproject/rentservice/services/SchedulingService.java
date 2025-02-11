@@ -7,8 +7,13 @@ import com.batchproject.rentservice.models.taskmodels.TaskStatus;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,6 +26,10 @@ public class SchedulingService {
     private TaskScheduler taskScheduler;
     private JobExecutionRepository jobExecutionRepository;
 
+    private final JobLauncher jobLauncher;
+    private final Job job;
+
+    @Transactional
     public void processRent(Integer month, Integer year, @NotNull LocalDateTime runAt) {
 
         JobExecutionLog executionLog = JobExecutionLog.builder()
@@ -36,17 +45,17 @@ public class SchedulingService {
         //for now just do a lambda method
         taskScheduler.schedule(()->{
             try{
-                executionLog.setExecutedAt(LocalDateTime.now());
-                executionLog.setTaskStatus(TaskStatus.RUNNING);
-                jobExecutionRepository.save(executionLog);
-                runAnotherTask();
-                executionLog.setTaskStatus(TaskStatus.SUCCESS);
-                jobExecutionRepository.save(executionLog);
+                setLogRunning(executionLog);
+//                runAnotherTask();
+                JobParameters jobParameters = new JobParametersBuilder()
+                        .addLong("startAt", System.currentTimeMillis())
+                        .toJobParameters();
+                jobLauncher.run(job, jobParameters);
+                setLogDone(executionLog);
 
             }catch (Exception e){
                 log.info("job failed, exception"+e);
-                executionLog.setTaskStatus(TaskStatus.FAILED);
-                jobExecutionRepository.save(executionLog);
+                setLogError(executionLog);
             }
         },date);
     }
@@ -56,4 +65,19 @@ public class SchedulingService {
             System.out.println("I am running, was set by api at ");
         }
     }
+
+    public void setLogRunning(JobExecutionLog executionLog){
+        executionLog.setExecutedAt(LocalDateTime.now());
+        executionLog.setTaskStatus(TaskStatus.RUNNING);
+        jobExecutionRepository.save(executionLog);
+    }
+    public void setLogDone(JobExecutionLog executionLog){
+        executionLog.setTaskStatus(TaskStatus.SUCCESS);
+        jobExecutionRepository.save(executionLog);
+    }
+    public void setLogError(JobExecutionLog executionLog){
+        executionLog.setTaskStatus(TaskStatus.FAILED);
+        jobExecutionRepository.save(executionLog);
+    }
+
 }
