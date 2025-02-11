@@ -1,6 +1,8 @@
 spring:
-  profiles:
-    active: postgres
+  config:
+    import: secret.yml
+  datasource:
+    driver-class-name: org.postgresql.Driver
   application:
     name: jobs
   jpa:
@@ -10,9 +12,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_schema: public
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     baseline-on-migrate: true
     defaultSchema: public
+
   logging:
     level:
       org:
@@ -27,3 +33,4 @@ spring:
                 BasicBinder: TRACE
 server:
   port: 9090
+
