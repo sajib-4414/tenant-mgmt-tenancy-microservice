@@ -32,7 +32,7 @@ public class Rent extends BaseEntity {
     private RentStatus status;
 
     @JoinColumn(name = "tenant_profile_id")
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(cascade = CascadeType.MERGE)
     private TenantProfile tenantProfile;
 
     @Column(name = "suite_id")

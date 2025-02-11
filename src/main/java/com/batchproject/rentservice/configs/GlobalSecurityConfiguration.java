@@ -22,6 +22,7 @@ public class GlobalSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         return httpSecurity
+                .headers(header-> header.frameOptions(options-> options.sameOrigin()))
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(basic -> basic.disable())
 

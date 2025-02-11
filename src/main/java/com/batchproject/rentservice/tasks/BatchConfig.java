@@ -5,6 +5,9 @@ import com.batchproject.rentservice.models.rent.RentDTO;
 import com.batchproject.rentservice.models.rent.RentRepository;
 import com.batchproject.rentservice.models.rent.RentStatus;
 import com.batchproject.rentservice.models.tenant.TenantProfile;
+import com.batchproject.rentservice.models.tenant.TenantProfileRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -45,6 +48,9 @@ public class BatchConfig {
     private final PlatformTransactionManager platformTransactionManager;
     private final ItemProcessor rentProcessor;
     private final RentRepository rentRepository;
+    private final TenantProfileRepository tenantProfileRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
     @Bean
@@ -71,20 +77,6 @@ public class BatchConfig {
         lineTokenizer.setStrict(false);
         lineTokenizer.setNames("amount", "due_date", "paid_date", "status", "tenant_profile_id", "suite_id");
 
-//        // This maps each row that is read from the CSV to a Rent object
-//        BeanWrapperFieldSetMapper<Rent> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
-//        fieldSetMapper.setTargetType(Rent.class);
-//
-//        // Register custom editors for type conversion
-//        fieldSetMapper.setCustomEditors(Collections.singletonMap(
-//                LocalDate.class,
-//                new PropertyEditorSupport() {
-//                    @Override
-//                    public void setAsText(String text) {
-//                        setValue(LocalDate.parse(text, DateTimeFormatter.ISO_LOCAL_DATE));
-//                    }
-//                }
-//        ));
 
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(new CustomFieldSetMapper());
@@ -109,9 +101,18 @@ public class BatchConfig {
             rent.setStatus(RentStatus.valueOf(fieldSet.readString("status")));
 
             // Create TenantProfile with ID
-            TenantProfile tenantProfile = new TenantProfile();
-            tenantProfile.setId(fieldSet.readLong("tenant_profile_id"));
-            rent.setTenantProfile(tenantProfile);
+            TenantProfile profile = tenantProfileRepository.findById(fieldSet.readLong("tenant_profile_id"))
+                    .orElseGet(()->{
+                        TenantProfile newProfile = new TenantProfile();
+                        newProfile.setId(fieldSet.readLong("tenant_profile_id"));
+                        newProfile.setKeycloakUserId("keycloak-"+fieldSet.readString("tenant_profile_id"));
+                        var savedprofile = tenantProfileRepository.save(newProfile);
+                        entityManager.flush();
+                        return savedprofile;
+                    });
+
+
+            rent.setTenantProfile(profile);
 
             rent.setSuiteId(fieldSet.readLong("suite_id"));
 

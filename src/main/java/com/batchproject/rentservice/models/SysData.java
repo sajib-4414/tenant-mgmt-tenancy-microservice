@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 wash price, dry price
 has basement
  */
-@Table(name = "sysdata", indexes = @Index(columnList = "table_name"))
+@Table(name = "sysdata", indexes = @Index(name = "sys_data_index", columnList = "table_name"))
 @Entity
 public class SysData extends BaseEntity{
     @Column(name = "table_name")
@@ -20,9 +20,9 @@ public class SysData extends BaseEntity{
     @Column(name = "reference_id")
     Long referenceId;
 
-    @Column(name = "key")
+    @Column(name = "t_key")
     String key;
 
-    @Column(name = "value")
+    @Column(name = "t_value")
     String value;
 }
