@@ -69,8 +69,8 @@ public class BatchConfig {
 
 //        System.out.println(new File("src/main/resources/rents.csv").getAbsolutePath());
         Resource resource = new ClassPathResource("rents.csv");
-        System.out.println("File exists: " + resource.exists());
-        System.out.println("File path: " + resource.getDescription());
+      //  System.out.println("File exists: " + resource.exists());
+      //  System.out.println("File path: " + resource.getDescription());
 
         FlatFileItemReader<Rent> itemReader = new FlatFileItemReader<>();
 //        itemReader.setResource(new FileSystemResource("src/main/resources/rents.csv"));

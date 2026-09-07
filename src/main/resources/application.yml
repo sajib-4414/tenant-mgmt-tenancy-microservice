@@ -1,4 +1,6 @@
 spring:
+  flyway:
+    enabled: false
   profiles:
     active: memory
   application:
@@ -20,3 +22,4 @@ spring:
                 BasicBinder: TRACE
 server:
   port: 9090
+

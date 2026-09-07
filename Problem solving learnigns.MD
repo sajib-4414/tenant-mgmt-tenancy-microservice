@@ -92,3 +92,7 @@ So yes, using just an ItemReader with TaskExecutor will likely be slower because
 - The file reading is still sequential
 - Only the processing/writing of chunks happens in parallel
 - **All threads compete for the same reader resource**
+- ----------------------------------------------------------------------
+Right now the application with batch job is showing some problem, it is not picking up
+the memory profile, run with this argument, it will run
+.\mvnw spring-boot:run "-Dspring-boot.run.profiles=memory"
