@@ -20,6 +20,7 @@ secret.yml
 *.iml
 *.ipr
 
+*.csv
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

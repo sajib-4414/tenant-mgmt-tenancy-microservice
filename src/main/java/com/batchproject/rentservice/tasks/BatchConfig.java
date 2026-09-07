@@ -74,7 +74,7 @@ public class BatchConfig {
 
         FlatFileItemReader<Rent> itemReader = new FlatFileItemReader<>();
 //        itemReader.setResource(new FileSystemResource("src/main/resources/rents.csv"));
-        itemReader.setResource(new ClassPathResource("rents.csv"));
+        itemReader.setResource(new ClassPathResource("rent_records_200k.csv"));
         itemReader.setName("csvReader");
         itemReader.setLinesToSkip(minValue);//skip reading the header/ rows that are read already, the header row is excluded already in partitioner when we started from row 1
         itemReader.setMaxItemCount(maxValue-minValue+1);
