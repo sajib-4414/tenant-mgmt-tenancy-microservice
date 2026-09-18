@@ -84,7 +84,9 @@ With single reader + TaskExecutor (Approach 2):
 * Single reader reads records sequentially
 * Multiple threads process the CHUNKS after reading
 * **I/O bottleneck at the reader level**
-
+* Read and writes are bottlenecked.
+*  I have done the experiment. Going for Dedicated parition, read write worker decreases the processing
+time by 16%.
 
 
 So yes, using just an ItemReader with TaskExecutor will likely be slower because:
