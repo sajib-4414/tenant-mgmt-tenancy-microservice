@@ -1,0 +1,22 @@
+type RentPrice {
+    id: ID
+    effectiveStartDate: String
+    effectiveEndDate: String
+    rentAmt: Float
+    suiteId: Int
+}
+
+input RentPriceDTO {
+    effectiveStartDate: String
+    effectiveEndDate: String
+    rentAmt: Float
+    suiteId: Int
+}
+
+type Query {
+    rentHistoryBySuite(suiteId: ID!): [RentPrice]
+}
+
+type Mutation {
+    createRentPrice(payload: RentPriceDTO!): RentPrice
+}
